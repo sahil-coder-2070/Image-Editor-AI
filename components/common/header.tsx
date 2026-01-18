@@ -3,17 +3,21 @@ import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
 import { ModeToggle } from "../theme-toggle";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from "@clerk/nextjs";
+import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { Button } from "../ui/button";
+import { usePathname } from "next/navigation";
+import { useStoreUserEffect } from "@/hooks/use-storeuser-effect";
+import { BarLoader } from "react-spinners";
+import { Authenticated, Unauthenticated } from "convex/react";
 
 const Header = () => {
   const { theme } = useTheme();
+  const path = usePathname();
+  const { isLoading } = useStoreUserEffect();
+
+  if (path === "/editor") {
+    return null;
+  }
   return (
     <header className="fixed top-0 z-50 w-full ">
       <div className="dark:bg-neutral-950/50 backdrop-blur-2xl w-full py-5 px-15 border-b dark:border-neutral-600/50 bg-neutral-200/20 border-neutral-300 flex justify-between items-center">
@@ -56,7 +60,7 @@ const Header = () => {
           </ul>
         </div>
         <div className="flex items-center gap-4">
-          <SignedOut>
+          <Unauthenticated>
             <SignInButton>
               <Button variant={"outline"} className="hidden sm:flex">
                 Sign In
@@ -65,14 +69,22 @@ const Header = () => {
             <SignUpButton>
               <Button>Get Started</Button>
             </SignUpButton>
-          </SignedOut>
-          <SignedIn>
+          </Unauthenticated>
+          <Authenticated>
             <UserButton />
-          </SignedIn>
+          </Authenticated>
           <span>
             <ModeToggle />
           </span>
         </div>
+        {isLoading && (
+          <div className="fixed bottom-0 left-0 w-full z-40 flex justify-center">
+            <BarLoader
+              width={"100%"}
+              color={theme === "light" ? "#0a0a0a" : "#fafafa"}
+            />
+          </div>
+        )}
       </div>
     </header>
   );
