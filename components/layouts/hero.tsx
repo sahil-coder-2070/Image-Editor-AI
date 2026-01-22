@@ -1,15 +1,16 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { HeroVideoDialogDemoTopInBottomOut } from "../ui/HeroVideoDialogDemoTopInBottomOut";
+import Container from "../common/container";
 
 const HeroSection = () => {
   return (
-    <section className="py-20 text-center min-h-screen flex flex-col items-center justify-center relative  overflow-hidden">
+    <Container className="py-20 text-center min-h-screen flex flex-col items-center justify-center relative  overflow-hidden">
       <div className="max-w-4xl mx-auto px-6 ">
         <h1 className="md:text-7xl sm:text-5xl text-4xl font-semibold mb-6">
           Simple Tools <br /> for <span>Better Images</span>
         </h1>
-        <p className="text-xs mx-auto max-w-lg text-neutral-500 dark:text-neutral-400 mb-8 leading-tight">
+        <p className="text-xs md:text-xl mx-auto max-w-lg text-neutral-500 dark:text-neutral-400 mb-8 leading-tight">
           Edit images easily using intuitive tools built for{" "}
           <span className="text-black dark:text-white font-medium">speed</span>,{" "}
           <span className="text-black dark:text-white font-medium">
@@ -28,7 +29,7 @@ const HeroSection = () => {
         </div>
       </div>
       <HeroVideoDialogDemoTopInBottomOut />
-    </section>
+    </Container>
   );
 };
 
