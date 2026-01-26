@@ -12,12 +12,11 @@ import { Authenticated, Unauthenticated } from "convex/react";
 import { LayoutDashboard } from "lucide-react";
 
 const Header = () => {
-
   const { theme } = useTheme();
   const path = usePathname();
   const { isLoading } = useStoreUserEffect();
 
-  if (path === "/editor") {
+  if (path.startsWith("/editor")) {
     return null;
   }
   return (
@@ -72,14 +71,14 @@ const Header = () => {
               <Button>Get Started</Button>
             </SignUpButton>
           </Unauthenticated>
-         
-            <Link href={"/dashboard"}>
-              <Button className="hidden sm:flex">
-                <LayoutDashboard className="h-4 w-4" />
-                <span className="hidden sm:flex">Dashboard</span>
-              </Button>
-            </Link>
-    
+
+          <Link href={"/dashboard"}>
+            <Button className="hidden sm:flex">
+              <LayoutDashboard className="h-4 w-4" />
+              <span className="hidden sm:flex">Dashboard</span>
+            </Button>
+          </Link>
+
           <Authenticated>
             <UserButton />
           </Authenticated>

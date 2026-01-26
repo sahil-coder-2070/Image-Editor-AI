@@ -202,7 +202,8 @@ export default function PricingCards() {
                 </CheckoutButton>
               </SignedIn>
               <SignedOut>
-                <SignInButton mode="modal">
+                <SignInButton  mode="modal">
+                
                   <button
                     className={[
                       "w-full cursor-pointer rounded-xl py-4 text-base font-semibold",
