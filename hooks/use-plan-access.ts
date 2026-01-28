@@ -39,5 +39,23 @@ export function usePlanAccess() {
       .map(([tooId]) => tooId);
   };
 
-  
+  const canCreateProject = (currentproject: number) => {
+    if (isPro) return true;
+    return currentproject < 3;
+  };
+
+  const canExport = (currentexport: number) => {
+    if (isPro) return true;
+    return currentexport < 20;
+  };
+  return {
+    userPlan: isPro ? "pro" : "free_user",
+    isPro,
+    isFree,
+    planAccess,
+    hasAccess,
+    getRestrictedTools,
+    canCreateProject,
+    canExport,
+  };
 }
