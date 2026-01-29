@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  reactCompiler: false,
 };
 
 export default nextConfig;
