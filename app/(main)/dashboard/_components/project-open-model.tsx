@@ -15,6 +15,7 @@ import { useConvexMutation, useConvexQuery } from "@/hooks/use-convex-query";
 import { usePlanAccess } from "@/hooks/use-plan-access";
 import { AlertTriangleIcon, ImageIcon, Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
@@ -30,6 +31,7 @@ const ProjectOpenModel = ({ isOpen, onClose }: ProjectOpenModelProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [showupgrade, setShowupgrade] = useState<boolean>(false);
+  const router = useRouter();
 
   const { isFree, canCreateProject } = usePlanAccess();
   const { data: project } = useConvexQuery(api.project.getUserProjects);
@@ -38,7 +40,7 @@ const ProjectOpenModel = ({ isOpen, onClose }: ProjectOpenModelProps) => {
   const currenprojectcount = Array.isArray(project) ? project.length : 0;
   const canCreate = canCreateProject(currenprojectcount);
 
-  const handleCreateProject = () => {
+  const handleCreateProject = async () => {
     if (!canCreate) {
       setShowupgrade(true);
       return;
@@ -55,9 +57,37 @@ const ProjectOpenModel = ({ isOpen, onClose }: ProjectOpenModelProps) => {
       formData.append("file", selectedFile);
       formData.append("fileName", selectedFile.name);
 
-      
-    } catch (error) {
+      const uploadResponse = await fetch("api/imagekit/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const uploadData = await uploadResponse.json();
+      if (!uploadData.success) {
+        throw new Error(uploadData.error || "failed to upload image");
+      }
+
+      const projectId = createProject({
+        tilte: projectTitle.trim(),
+        orginalImage: uploadData.url,
+        currentImageUrl: uploadData.url,
+        thumbnailUrl: uploadData.url,
+        width: uploadData.witdh || 800,
+        height: uploadData.height || 600,
+        canvasState: null,
+      });
+
+      toast.success("Project created Succesfully!");
+      router.push("/eidtor/${projectId");
+    } catch (error: unknown) {
       console.log(error);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : String(error) || "failed to create porject. Please try again",
+      );
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -78,6 +108,7 @@ const ProjectOpenModel = ({ isOpen, onClose }: ProjectOpenModelProps) => {
     const nameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
     setProjectTitle(nameWithoutExt);
   };
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
@@ -86,6 +117,7 @@ const ProjectOpenModel = ({ isOpen, onClose }: ProjectOpenModelProps) => {
     maxFiles: 1,
     maxSize: 20 * 1024 * 1024,
   });
+
   return (
     <div>
       <Dialog open={isOpen} onOpenChange={handelChange}>
