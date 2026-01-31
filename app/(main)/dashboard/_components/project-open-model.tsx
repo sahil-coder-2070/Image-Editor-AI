@@ -44,7 +44,7 @@ const ProjectOpenModel = ({ isOpen, onClose }: ProjectOpenModelProps) => {
   const canCreate = canCreateProject(currenprojectcount);
 
   const handleCreateProject = async () => {
-    if (true) {
+    if (!canCreate) {
       setShowupgrade(true);
       return;
     }

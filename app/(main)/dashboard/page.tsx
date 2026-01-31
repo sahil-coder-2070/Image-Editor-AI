@@ -44,7 +44,7 @@ const Dashboard = () => {
           <span className="animate-spin">
             <Loader2 height={50} width={40} />
           </span>
-        ) : projects && projects.length > 0 ? <ProjectGrid projects={projects unknown[] | undefined;} /> : (
+        ) : projects && projects.length > 0 ? <ProjectGrid projects={projects} /> : (
           <>
             <SvgImage />
             <h2 className="text-3xl font-medium md:text-4xl">
