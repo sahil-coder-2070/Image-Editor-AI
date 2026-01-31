@@ -5,7 +5,6 @@ import ProjectCard from "./project-card";
 
 const  ProjectGrid = ({ projects }: { projects: unknown[] | undefined }) => {
   const router = useRouter()
-
   const handleEditProject = (projectId: string) => {
     router.push(`/editor/${projectId}`)
   }
