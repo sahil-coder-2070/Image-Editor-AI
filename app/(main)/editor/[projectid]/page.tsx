@@ -2,9 +2,11 @@
 import { CanvasContext } from "@/context/context";
 import { api } from "@/convex/_generated/api";
 import { useConvexQuery } from "@/hooks/use-convex-query";
-import { Monitor } from "lucide-react";
+import { Loader2, Monitor } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
+import { HashLoader } from "react-spinners";
+import CanvasEditor from "../_components/canvas-editor";
 
 const Editor = () => {
   const { projectid } = useParams();
@@ -18,7 +20,33 @@ const Editor = () => {
     data: project,
     isLoading,
     error,
-  } = useConvexQuery(api.project.getProject, { projectid });
+  } = useConvexQuery(api.project.getProject, { projectId: projectid });
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-3">
+        <span className="animate-spin">
+          <Loader2 height={50} width={40} />
+        </span>
+        <p>Loading Please wait.</p>
+      </div>
+    );
+  }
+
+  if (error || !project) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <h2 className="mb-2 text-2xl font-bold text-red-500">
+            Project Not Found
+          </h2>
+          <p className="text-gray-600">
+            The project you're looking for doesn't exist or has been removed.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <CanvasContext.Provider
@@ -40,7 +68,32 @@ const Editor = () => {
           </p>
         </div>
       </div>
-      <div className="hidden lg:block">editor {projectid}</div>
+      <div className="hidden min-h-screen lg:block">
+        <div>
+          {processingMessage && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs">
+              <div className="flex flex-col items-center gap-4 rounded-lg p-6">
+                <HashLoader color="#fff" />
+                <div className="text-center">
+                  <p className="text-xl font-medium text-white">
+                    {processingMessage}
+                  </p>
+                  <p className="mt-1 text-xs text-red-500 text-shadow-red-300">
+                    Please wait, do not switch tabs or navigate away
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="hidden lg:block"></div>
+          <div className="flex flex-1 overflow-hidden">
+            <div className="flex-1">
+              <CanvasEditor project={project} />
+            </div>
+          </div>
+          <div className="hidden lg:block">editor {projectid}</div>
+        </div>
+      </div>
     </CanvasContext.Provider>
   );
 };
