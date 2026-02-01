@@ -22,6 +22,9 @@ const Editor = () => {
     error,
   } = useConvexQuery(api.project.getProject, { projectId: projectid });
 
+  // Ensure project has all required properties
+  const projectWithId = project && { ...project, _id: projectid };
+
   if (isLoading) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-3">
@@ -68,7 +71,7 @@ const Editor = () => {
           </p>
         </div>
       </div>
-      <div className="hidden min-h-screen lg:block">
+      <div className="hidden min-h-screen lg:block bg-neutral-900">
         <div>
           {processingMessage && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs">
@@ -86,12 +89,12 @@ const Editor = () => {
             </div>
           )}
           <div className="hidden lg:block"></div>
-          <div className="flex flex-1 overflow-hidden">
+          <div className="flex flex-1 overflow-hidden min-h-screen">
             <div className="flex-1">
               <CanvasEditor project={project} />
             </div>
           </div>
-          <div className="hidden lg:block">editor {projectid}</div>
+          <div className=""></div>
         </div>
       </div>
     </CanvasContext.Provider>

@@ -171,6 +171,11 @@ export const updateProject = mutation({
 
     await ctx.db.patch(args.projectId, updateData);
 
+    // Update user's last active time
+    await ctx.db.patch(user._id, {
+      lastActive: Date.now(),
+    });
+
     return args.projectId;
   },
 });

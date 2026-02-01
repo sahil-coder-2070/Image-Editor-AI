@@ -8,10 +8,10 @@ export type UpgradeModalProps = {
   reason: string;
 };
 
-export type Project = {
-  _id: Id<"project">;
+export interface Project {
+  _id: string;
   title: string;
-  userId: Id<"users">;
+  userId: string;
   canvasState: unknown;
   width: number;
   height: number;
@@ -20,7 +20,19 @@ export type Project = {
   thumbnailUrl?: string;
   createdAt: number;
   updatedAt: number;
+}
+
+export type UpdateDate = {
+  updateAt: number;
+  canvasState?: unknown;
+  width?: number;
+  height?: number;
+  currentImageUrl?: string;
+  thumbnailUrl?: string;
+  activeTransformation?: string;
+  backgroundRemove?: boolean;
 };
+
 
 export type User = {
   _id: Id<"users">;
@@ -36,21 +48,8 @@ export type User = {
   imageUrl?: string; // optional
 };
 
-export type UpdateDate = {
-  updateAt: number;
-  canvasState?: unknown;
-  width?: number;
-  height?: number;
-  currentImageUrl?: string;
-  thumbnailUrl?: string;
-  activeTransformation?: string;
-  backgroundRemove?: boolean;
-};
-
-
-
 export type CanvasContextType = {
-  canvasEditor: any; 
+  canvasEditor: any;
   setCanvasEditor: Dispatch<SetStateAction<any>>;
   activeTool: string;
   processingMessage: string | null;
