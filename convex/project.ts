@@ -1,10 +1,8 @@
-import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
-import { api } from "./_generated/api";
-import { MutationCtx, QueryCtx } from "./_generated/server";
+import { Project, UpdateDate } from "../utils/types";
+import { api, internal } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
-
-import { Project } from "../utils/types";
+import { mutation, MutationCtx, query, QueryCtx } from "./_generated/server";
 
 export const create = mutation({
   args: {
@@ -14,7 +12,7 @@ export const create = mutation({
     thumbnailUrl: v.optional(v.string()),
     width: v.number(),
     height: v.number(),
-    canvasState: v.optional(v.any()), 
+    canvasState: v.optional(v.any()),
   },
   handler: async (
     ctx: MutationCtx,
@@ -25,7 +23,7 @@ export const create = mutation({
       thumbnailUrl?: string;
       width: number;
       height: number;
-      canvasState?: unknown; 
+      canvasState?: unknown;
     },
   ): Promise<string> => {
     const user = await ctx.runQuery(api.users.getCurrentUser);
@@ -43,7 +41,7 @@ export const create = mutation({
     const projectID = await ctx.db.insert("project", {
       title: args.title,
       userId: user._id,
-      canvasState: args.canvasState as unknown || {}, 
+      canvasState: (args.canvasState as unknown) || {},
       width: args.width,
       height: args.height,
       originalImageUrl: args.originalImageUrl,
@@ -99,5 +97,80 @@ export const deleteProjects = mutation({
       lastActive: Date.now(),
     });
     return { success: true };
+  },
+});
+
+export const getProject = query({
+  args: { projectId: v.id("project") },
+  handler: async (
+    ctx: QueryCtx,
+    args: { projectId: Id<"project"> },
+  ): Promise<Project | null> => {
+    const user = await ctx.runQuery(api.users.getCurrentUser);
+    const project = await ctx.db.get(args.projectId);
+    if (!project) {
+      throw new Error("Project not found");
+    }
+    if (!user || project?.userId !== user._id) {
+      throw new Error("Access Denied");
+    }
+    return project;
+  },
+});
+
+export const updateProject = mutation({
+  args: {
+    projectId: v.id("project"),
+    canvasState: v.optional(v.any()),
+    width: v.optional(v.number()),
+    height: v.optional(v.number()),
+    currentImageUrl: v.optional(v.string()),
+    thumbnailUrl: v.optional(v.string()),
+    activeTransformation: v.optional(v.string()),
+    backgroundRemove: v.optional(v.boolean()),
+  },
+  handler: async (
+    ctx: MutationCtx,
+    args: {
+      projectId: Id<"project">;
+      canvasState?: unknown;
+      width?: number;
+      height?: number;
+      currentImageUrl?: string;
+      thumbnailUrl?: string;
+      activeTransformation?: string;
+      backgroundRemove?: boolean;
+    },
+  ): Promise<Id<"project">> => {
+    const user = await ctx.runQuery(api.users.getCurrentUser);
+
+    const project = await ctx.db.get(args.projectId);
+    if (!project) {
+      throw new Error("Project not found");
+    }
+
+    if (!user || project?.userId !== user._id) {
+      throw new Error("Access Denied");
+    }
+
+    const updateData: UpdateDate = {
+      updateAt: Date.now(),
+    };
+    if (args.canvasState !== undefined)
+      updateData.canvasState = args.canvasState;
+    if (args.width !== undefined) updateData.width = args.width;
+    if (args.height !== undefined) updateData.height = args.height;
+    if (args.currentImageUrl !== undefined)
+      updateData.currentImageUrl = args.currentImageUrl;
+    if (args.thumbnailUrl !== undefined)
+      updateData.thumbnailUrl = args.thumbnailUrl;
+    if (args.activeTransformation !== undefined)
+      updateData.activeTransformation = args.activeTransformation;
+    if (args.backgroundRemove !== undefined)
+      updateData.backgroundRemove = args.backgroundRemove;
+
+    await ctx.db.patch(args.projectId, updateData);
+
+    return args.projectId;
   },
 });

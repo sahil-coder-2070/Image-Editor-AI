@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import { Id } from "../convex/_generated/dataModel";
 
 export type UpgradeModalProps = {
@@ -33,4 +34,26 @@ export type User = {
   createdAt: number;
   lastActive: number;
   imageUrl?: string; // optional
+};
+
+export type UpdateDate = {
+  updateAt: number;
+  canvasState?: unknown;
+  width?: number;
+  height?: number;
+  currentImageUrl?: string;
+  thumbnailUrl?: string;
+  activeTransformation?: string;
+  backgroundRemove?: boolean;
+};
+
+
+
+export type CanvasContextType = {
+  canvasEditor: any; 
+  setCanvasEditor: Dispatch<SetStateAction<any>>;
+  activeTool: string;
+  processingMessage: string | null;
+  setProcessingMessage: Dispatch<SetStateAction<string | null>>;
+  onToolChange: Dispatch<SetStateAction<string>>;
 };
