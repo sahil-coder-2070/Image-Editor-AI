@@ -56,3 +56,10 @@ export type CanvasContextType = {
   setProcessingMessage: Dispatch<SetStateAction<string | null>>;
   onToolChange: Dispatch<SetStateAction<string>>;
 };
+
+
+export interface ToolConfig {
+  title: string;
+  icon: React.ComponentType<React.ComponentProps<typeof LucideReact>>;
+  description: string;
+}

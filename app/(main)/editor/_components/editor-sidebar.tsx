@@ -1,4 +1,6 @@
-import { Project } from "@/utils/types";
+import { useCanvas } from "@/context/context";
+import { Project, ToolConfig } from "@/utils/types";
+
 import {
   Crop,
   Expand,
@@ -8,7 +10,8 @@ import {
   Text,
   Eye,
 } from "lucide-react";
-const TOOL_CONFIGS = {
+
+const TOOL_CONFIGS: Record<string, ToolConfig> = {
   resize: {
     title: "Resize",
     icon: Expand,
@@ -46,6 +49,9 @@ const TOOL_CONFIGS = {
   },
 };
 const EditorSidebar = ({ project }: { project: Project }) => {
+  const { activeTool } = useCanvas();
+
+  const toolConfig = TOOL_CONFIGS[activeTool];
   return <div>EditorSidebar</div>;
 };
 

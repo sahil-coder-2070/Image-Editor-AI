@@ -1,5 +1,6 @@
 "use client";
 import UpgradeModel from "@/components/common/upgrade-model";
+import { ModeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useCanvas } from "@/context/context";
 import { usePlanAccess } from "@/hooks/use-plan-access";
@@ -84,7 +85,7 @@ const EditorTopbar = ({ project }: { project: Project }) => {
 
   return (
     <>
-      <div className="border-b  dark:bg-neutral-950/80 px-6 py-4">
+      <div className="border-b px-6 py-4 dark:bg-neutral-950/80">
         <div className="mb-3 flex items-center justify-between">
           <Button
             variant={"custom"}
@@ -93,8 +94,11 @@ const EditorTopbar = ({ project }: { project: Project }) => {
           >
             <ArrowLeft /> All Projects
           </Button>
-          <h2 className="capitalize  ">{project.title}</h2>
-          <div>Action buttons</div>
+          <h2 className="capitalize">{project.title}</h2>
+          <div className="flex items-center gap-4">
+            Action buttons
+            <ModeToggle />
+          </div>
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -109,7 +113,7 @@ const EditorTopbar = ({ project }: { project: Project }) => {
                   key={tools.id}
                   variant={isActive ? "default" : "secondary"}
                   size="sm"
-                  className={`text-sm  ${!hasToolAccess ? "opacity-60" : ""}`}
+                  className={`text-sm ${!hasToolAccess ? "opacity-60" : ""}`}
                   onClick={() => handleToolChange(tools.id)}
                 >
                   <Icon />
@@ -119,11 +123,12 @@ const EditorTopbar = ({ project }: { project: Project }) => {
               );
             })}
           </div>
+
           <div className="flex items-center gap-1">
             <Button
               variant="ghost"
               size="sm"
-              className={`cursor-not-allowed text-white opacity-50`}
+              className={`cursor-not-allowed bg-neutral-500 text-white opacity-50`}
             >
               <RotateCcw className="h-4 w-4" />
             </Button>
