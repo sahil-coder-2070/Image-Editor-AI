@@ -26,6 +26,7 @@ export interface Project {
   thumbnailUrl?: string;
   createdAt: number;
   updatedAt: number;
+  activeTransformations: any;
 }
 
 export type UpdateDate = {
@@ -38,7 +39,6 @@ export type UpdateDate = {
   activeTransformation?: string;
   backgroundRemove?: boolean;
 };
-
 
 export type User = {
   _id: Id<"users">;
@@ -63,13 +63,11 @@ export type CanvasContextType = {
   onToolChange: Dispatch<SetStateAction<string>>;
 };
 
-
 export interface ToolConfig {
   title: string;
   icon: IconType;
   description: string;
 }
-
 
 export interface FilterConfig {
   key: string;

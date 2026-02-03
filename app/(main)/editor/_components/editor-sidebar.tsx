@@ -16,6 +16,8 @@ import { CropContent } from "./tools/Crop";
 import { BackgroundControls } from "./tools/background-controls";
 import { TextControls } from "./tools/text-control";
 import { AIExtenderControls } from "./tools/ai-extender-controls";
+import { AIEdit } from "./tools/ai-edit";
+
 
 const TOOL_CONFIGS: Record<string, ToolConfig> = {
   resize: {
@@ -64,7 +66,7 @@ const EditorSidebar = ({ project }: { project: Project }) => {
 
   const Icon = toolConfig.icon;
   return (
-    <div className="flex min-w-80 flex-col border-r dark:bg-neutral-950/80">
+    <div className="flex w-80 min-w-80 flex-col border-r dark:bg-neutral-950/80">
       <div className="border-b p-4">
         <div className="flex items-center gap-3">
           <Icon className="h-4 w-4" />
@@ -93,6 +95,8 @@ const renderToolConfig = (activeTool: string, project: Project) => {
       return <TextControls />;
     case "ai_extender":
       return <AIExtenderControls project={project} />;
+    case "ai_edit":
+      return <AIEdit project={project} />;
     default:
       return <div>Select a Tool to get started</div>;
   }
