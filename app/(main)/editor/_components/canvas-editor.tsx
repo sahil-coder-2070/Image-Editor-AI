@@ -3,7 +3,7 @@ import { useCanvas } from "@/context/context";
 import { api } from "@/convex/_generated/api";
 import { useConvexMutation } from "@/hooks/use-convex-query";
 import { Project } from "@/utils/types";
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { Canvas, FabricImage } from "fabric";
 
 const CanvasEditor = ({ project }: { project: Project }) => {
@@ -201,6 +201,23 @@ const CanvasEditor = ({ project }: { project: Project }) => {
         break;
     }
   }, [canvasEditor, activeTool]);
+
+  useEffect(() => {
+    if (!canvasEditor || !onToolChange) return;
+
+    const handleSelection = (e: any) => {
+      const selectedObject = e.selected?.[0];
+      if (selectedObject && selectedObject.type === "i-text") {
+        onToolChange("text");
+      }
+    };
+    canvasEditor.on("selection:created", handleSelection);
+    canvasEditor.on("selection:updated", handleSelection);
+    return () => {
+      canvasEditor.off("selection:created", handleSelection);
+      canvasEditor.off("selection:updated", handleSelection);
+    }
+  }, [canvasEditor, onToolChange]);
 
   return (
     <div

@@ -14,7 +14,8 @@ import AdjustControl from "./tools/Adjust";
 import { ResizeContent } from "./tools/Resize";
 import { CropContent } from "./tools/Crop";
 import { BackgroundControls } from "./tools/background-controls";
-
+import { TextControls } from "./tools/text-control";
+import { AIExtenderControls } from "./tools/ai-extender-controls";
 
 const TOOL_CONFIGS: Record<string, ToolConfig> = {
   resize: {
@@ -88,6 +89,10 @@ const renderToolConfig = (activeTool: string, project: Project) => {
       return <AdjustControl />;
     case "background":
       return <BackgroundControls project={project} />;
+    case "text":
+      return <TextControls />;
+    case "ai_extender":
+      return <AIExtenderControls project={project} />;
     default:
       return <div>Select a Tool to get started</div>;
   }
