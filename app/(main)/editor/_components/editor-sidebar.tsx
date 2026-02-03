@@ -11,8 +11,8 @@ import {
   Eye,
 } from "lucide-react";
 import CropContent from "./tools/Crop";
-import ResizeContent from "./tools/Resize";
 import AdjustControl from "./tools/Adjust";
+import { ResizeContent } from "./tools/Resize";
 
 const TOOL_CONFIGS: Record<string, ToolConfig> = {
   resize: {

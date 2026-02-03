@@ -1,10 +1,9 @@
-import { Project } from '@/utils/types'
 import React from 'react'
 
-const ResizeContent = ({project}:{project : Project}) => {
+const Resize = () => {
   return (
-    <div>ResizeContent</div>
+    <div>Resize</div>
   )
 }
 
-export default ResizeContent
+export default Resize
