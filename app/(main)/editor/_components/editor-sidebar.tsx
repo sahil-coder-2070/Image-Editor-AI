@@ -10,9 +10,9 @@ import {
   Text,
   Eye,
 } from "lucide-react";
-import CropContent from "./tools/Crop";
 import AdjustControl from "./tools/Adjust";
 import { ResizeContent } from "./tools/Resize";
+import { CropContent } from "./tools/Crop";
 
 const TOOL_CONFIGS: Record<string, ToolConfig> = {
   resize: {
