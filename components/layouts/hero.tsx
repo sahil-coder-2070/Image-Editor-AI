@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { HeroVideoDialogDemoTopInBottomOut } from "../ui/HeroVideoDialogDemoTopInBottomOut";
 import Container from "../common/container";
 import { AnimatedShinyText } from "../ui/animated-shiny-text";
 import { ArrowRight } from "lucide-react";
+import { VideoPlayer } from "../ui/video-player";
 
 const HeroSection = () => {
   return (
@@ -47,7 +47,7 @@ const HeroSection = () => {
           </Button>
         </div>
       </div>
-      <HeroVideoDialogDemoTopInBottomOut />
+      <VideoPlayer />
     </Container>
   );
 };

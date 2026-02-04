@@ -66,7 +66,7 @@ const ProjectCard = ({ project, onEdit }: { project: any; onEdit: any }) => {
             onClick={onEdit}
             size={"sm"}
             variant={"outline"}
-            disabled={isLoading}
+            disabled={!isLoading}
           >
             <Edit /> Edit
           </Button>

@@ -58,7 +58,7 @@ export default function PricingCards() {
     "3 projects maximum",
   ];
   const proFeatures = [
-    "3 design concepts",
+    "3 design   ",
     "Custom code",
     "On-time delivery",
     "Priority support",
@@ -202,8 +202,7 @@ export default function PricingCards() {
                 </CheckoutButton>
               </SignedIn>
               <SignedOut>
-                <SignInButton  mode="modal">
-                
+                <SignInButton mode="modal">
                   <button
                     className={[
                       "w-full cursor-pointer rounded-xl py-4 text-base font-semibold",
