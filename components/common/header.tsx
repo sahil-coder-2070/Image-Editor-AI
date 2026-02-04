@@ -20,7 +20,7 @@ const Header = () => {
     return null;
   }
   return (
-    <header className="fixed top-0 z-50 w-full border-b border-neutral-300 bg-neutral-200/20 backdrop-blur-2xl dark:border-neutral-600/50 dark:bg-neutral-950/50">
+    <header className="fixed top-0 z-50 w-full backdrop-blur-2xl">
       <div className="m-auto flex w-full max-w-7xl items-center justify-between px-4 py-5 md:px-15">
         <Link href={"/"}>
           <Image
@@ -89,7 +89,7 @@ const Header = () => {
         {isLoading && (
           <div className="fixed bottom-0 left-0 z-40 flex w-full justify-center">
             <BarLoader
-              height={"2px"}
+              height={"0.5px"}
               width={"100%"}
               color={theme === "light" ? "#0a0a0a" : "#fafafa"}
             />

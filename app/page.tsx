@@ -8,41 +8,42 @@ import { Stats } from "@/components/ui/stats-section";
 
 const page = () => {
   return (
-    <Container>
-      <div className="md:py-40 py-20">
+    <Container className="relative overflow-hidden">
+      <div className="bg-primary/15 dark:bg-primary/10 absolute top-0 right-1/16 bottom-60 h-60 w-150 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px]"></div>
+      <div className="py-20 md:py-40">
         <HeroSection />
         <Stats />
-        <section className="py-20 pb-10 text-center ">
-          <div className="max-w-4xl mx-auto px-6">
-            <h2 className="text-2xl md:text-4xl font-bold mb-6">
+        <section className="py-20 pb-10 text-center">
+          <div className="mx-auto max-w-4xl px-6">
+            <h2 className="mb-6 text-2xl font-bold md:text-4xl">
               A Better <span>Way to Edit Images Online</span>
             </h2>
-            <p className="text-xl md:text-lg max-w-lg  m-auto  text-neutral-500 dark:text-neutral-400 mb-8">
+            <p className="m-auto mb-8 max-w-lg text-xl text-neutral-500 md:text-lg dark:text-neutral-400">
               Edit and improve images quickly with easy-to-use tools that
               deliver clean, reliable results online.
             </p>
           </div>
         </section>
         <FeaturesSectionDemo />
-        <section className="py-20 pb-10 text-center ">
-          <div className="max-w-4xl mx-auto px-6">
-            <h2 className="text-2xl md:text-4xl font-bold mb-6">
+        <section className="py-20 pb-10 text-center">
+          <div className="mx-auto max-w-4xl px-6">
+            <h2 className="mb-6 text-2xl font-bold md:text-4xl">
               A Better <span>Way to Edit Images Online</span>
             </h2>
-            <p className="text-xl md:text-lg max-w-lg m-auto  text-neutral-500 dark:text-neutral-400 mb-8">
+            <p className="m-auto mb-8 max-w-lg text-xl text-neutral-500 md:text-lg dark:text-neutral-400">
               Edit and improve images quickly with easy-to-use tools that
               deliver clean, reliable results online.
             </p>
           </div>
         </section>
-        
+
         <PricingCards />
-        <section className="py-20 pb-10 text-center ">
-          <div className="max-w-4xl mx-auto px-6">
-            <h2 className="text-2xl md:text-4xl font-bold mb-6">
+        <section className="py-20 pb-10 text-center">
+          <div className="mx-auto max-w-4xl px-6">
+            <h2 className="mb-6 text-2xl font-bold md:text-4xl">
               A Better <span>Way to Edit Images Online</span>
             </h2>
-            <p className="text-xl md:text-lg max-w-lg m-auto  text-neutral-500 dark:text-neutral-400 mb-8">
+            <p className="m-auto mb-8 max-w-lg text-xl text-neutral-500 md:text-lg dark:text-neutral-400">
               Edit and improve images quickly with easy-to-use tools that
               deliver clean, reliable results online.
             </p>

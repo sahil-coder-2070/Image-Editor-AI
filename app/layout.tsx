@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import { Inter } from "next/font/google";
+import { Atma, Inter } from "next/font/google";
 import Header from "@/components/common/header";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -11,6 +11,11 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-inter",
+});
+const atma = Atma({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-atma",
 });
 
 export const metadata: Metadata = {
@@ -25,7 +30,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} ${atma.variable} antialiased`}>
+        {" "}
+        // modified
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
