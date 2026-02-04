@@ -26,7 +26,6 @@ export interface Project {
   thumbnailUrl?: string;
   createdAt: number;
   updatedAt: number;
-  activeTransformations: any;
 }
 
 export type UpdateDate = {
@@ -61,6 +60,15 @@ export type CanvasContextType = {
   processingMessage: string | null;
   setProcessingMessage: Dispatch<SetStateAction<string | null>>;
   onToolChange: Dispatch<SetStateAction<string>>;
+  history: string[];
+  historyIndex: number;
+  canUndo: boolean;
+  canRedo: boolean;
+  undo: () => void;
+  redo: () => void;
+  reset: () => void;
+  saveState: () => void;
+  isSaving: boolean;
 };
 
 export interface ToolConfig {
@@ -81,3 +89,12 @@ export interface FilterConfig {
   transform: (value: number) => number;
   suffix?: string;
 }
+
+export type ToolId =
+  | "resize"
+  | "crop"
+  | "adjust"
+  | "text"
+  | "background"
+  | "ai_extender"
+  | "ai_edit";

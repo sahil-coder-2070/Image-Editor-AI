@@ -11,12 +11,15 @@ const CanvasEditor = ({ project }: { project: Project }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { canvasEditor, setCanvasEditor, activeTool, onToolChange } =
-    useCanvas();
+  const {
+    canvasEditor,
+    setCanvasEditor,
+    activeTool,
+    onToolChange,
+    saveState,
+  } = useCanvas();
 
-  const { mutate: updateProject } = useConvexMutation(
-    api.project.updateProject,
-  );
+
 
   const calculateViewportScale = () => {
     if (!containerRef.current || !project) return 1;
@@ -109,6 +112,7 @@ const CanvasEditor = ({ project }: { project: Project }) => {
       canvas.calcOffset();
       canvas.requestRenderAll();
       setCanvasEditor(canvas);
+      saveState();
 
       setTimeout(() => {
         // workaround for initial resize issues
@@ -128,42 +132,23 @@ const CanvasEditor = ({ project }: { project: Project }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project._id]);
 
-  const saveCanvasState = async () => {
-    if (!canvasEditor || !project) return;
-
-    try {
-      const canvasJSON = canvasEditor.toJSON();
-      await updateProject({
-        projectId: project._id,
-        canvasState: canvasJSON,
-      });
-    } catch (error) {
-      console.error("Error saving canvas state:", error);
-    }
-  };
-
   useEffect(() => {
     if (!canvasEditor) return;
-    let saveTimeout: NodeJS.Timeout;
 
     const handleCanvasChange = () => {
-      clearTimeout(saveTimeout);
-      saveTimeout = setTimeout(() => {
-        saveCanvasState();
-      }, 2000);
+      saveState();
     };
 
     canvasEditor.on("object:modified", handleCanvasChange);
-    canvasEditor.on("object:added", handleCanvasChange);
+    canvasEditor.on("object:added",handleCanvasChange)
     canvasEditor.on("object:removed", handleCanvasChange);
 
     return () => {
-      clearTimeout(saveTimeout);
       canvasEditor.off("object:modified", handleCanvasChange);
       canvasEditor.off("object:added", handleCanvasChange);
       canvasEditor.off("object:removed", handleCanvasChange);
     };
-  }, [canvasEditor]);
+  }, [canvasEditor, saveState]);
 
   useEffect(() => {
     const handleResize = () => {

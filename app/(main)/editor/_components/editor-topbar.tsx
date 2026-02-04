@@ -3,8 +3,10 @@ import UpgradeModel from "@/components/common/upgrade-model";
 import { ModeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useCanvas } from "@/context/context";
+import { api } from "@/convex/_generated/api";
+import { useConvexMutation } from "@/hooks/use-convex-query";
 import { usePlanAccess } from "@/hooks/use-plan-access";
-import { Project } from "@/utils/types";
+import { Project, ToolId } from "@/utils/types";
 import {
   Crop,
   Expand,
@@ -17,16 +19,21 @@ import {
   Lock,
   RotateCcw,
   RotateCw,
+  RefreshCcw,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, ElementType } from "react";
 
-const TOOLS = [
+const TOOLS: {
+  id: ToolId;
+  label: string;
+  icon: ElementType;
+  proOnly?: boolean;
+}[] = [
   {
     id: "resize",
     label: "Resize",
     icon: Expand,
-    isActive: true,
   },
   {
     id: "crop",
@@ -62,19 +69,61 @@ const TOOLS = [
     proOnly: true,
   },
 ];
+
+const EXPORT_FORMATS = [
+  {
+    format: "PNG",
+    quality: 1.0,
+    label: "PNG (High Quality)",
+    extension: "png",
+  },
+  {
+    format: "JPEG",
+    quality: 0.9,
+    label: "JPEG (90% Quality)",
+    extension: "jpg",
+  },
+  {
+    format: "JPEG",
+    quality: 0.8,
+    label: "JPEG (80% Quality)",
+    extension: "jpg",
+  },
+  {
+    format: "WEBP",
+    quality: 0.9,
+    label: "WebP (90% Quality)",
+    extension: "webp",
+  },
+];
+
 const EditorTopbar = ({ project }: { project: Project }) => {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [restrictedTool, setRestrictedTool] = useState<string | null>(null);
 
-  const { activeTool, onToolChange, canvasEditor } = useCanvas();
+  const {
+    activeTool,
+    onToolChange,
+    canvasEditor,
+    undo,
+    redo,
+    reset,
+    canUndo,
+    canRedo,
+    isSaving,
+  } = useCanvas();
   const { hasAccess, canExport, isFree } = usePlanAccess();
   const router = useRouter();
+
+  const { mutate: updateProject, isLoading: isUpdatingProject } = useConvexMutation(
+    api.project.updateProject,
+  );
 
   const handleBackToDashboard = () => {
     router.push("/dashboard");
   };
 
-  const handleToolChange = (toolId: any) => {
+  const handleToolChange = (toolId: ToolId) => {
     if (!hasAccess(toolId)) {
       setRestrictedTool(toolId);
       setShowUpgradeModal(true);
@@ -83,6 +132,8 @@ const EditorTopbar = ({ project }: { project: Project }) => {
     onToolChange(toolId);
   };
 
+
+ 
   return (
     <>
       <div className="border-b px-6 py-4 dark:bg-neutral-950/80">
@@ -96,7 +147,15 @@ const EditorTopbar = ({ project }: { project: Project }) => {
           </Button>
           <h2 className="capitalize">{project.title}</h2>
           <div className="flex items-center gap-4">
-            Action buttons
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={reset}
+                          disabled={isSaving || !project.originalImageUrl}
+                          className="gap-2"
+                        >              <RefreshCcw />
+              Reset
+            </Button>
             <ModeToggle />
           </div>
         </div>
@@ -106,7 +165,7 @@ const EditorTopbar = ({ project }: { project: Project }) => {
               const Icon = tools.icon;
               const isActive = activeTool === tools.id;
               const hasToolAccess = hasAccess(
-                tools.id as keyof typeof usePlanAccess,
+                tools.id
               );
               return (
                 <Button
@@ -128,14 +187,18 @@ const EditorTopbar = ({ project }: { project: Project }) => {
             <Button
               variant="ghost"
               size="sm"
-              className={`cursor-not-allowed opacity-50 transition-colors duration-200 hover:bg-neutral-200/90`}
+              onClick={undo}
+              disabled={!canUndo}
+              className={`transition-colors duration-200 hover:bg-neutral-200/90`}
             >
               <RotateCcw className="h-4 w-4" />
             </Button>
             <Button
               variant="ghost"
               size="sm"
-              className={`cursor-not-allowed opacity-50 transition-colors duration-200 hover:bg-neutral-200/50`}
+              onClick={redo}
+              disabled={!canRedo}
+              className={`transition-colors duration-200 hover:bg-neutral-200/50`}
             >
               <RotateCw className="h-4 w-4" />
             </Button>

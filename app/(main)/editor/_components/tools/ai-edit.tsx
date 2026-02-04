@@ -63,7 +63,8 @@ export function AIEdit({ project }: { project: Project }) {
   const getMainImage = (): fabric.Image | null =>
     (canvasEditor
       ?.getObjects()
-      .find((obj:fabric.Object) => obj.type === "image") as fabric.Image) || null;
+      .find((obj: fabric.Object) => obj.type === "image") as fabric.Image) ||
+    null;
 
   const buildRetouchUrl = (imageUrl: string, presetKey: string) => {
     const preset = RETOUCH_PRESETS.find((p) => p.key === presetKey);
@@ -133,7 +134,7 @@ export function AIEdit({ project }: { project: Project }) {
         projectId: project._id,
         currentImageUrl: retouchedUrl,
         canvasState: canvasEditor.toJSON(),
-        activeTransformations: selectedPresetData.transform,
+        activeTransformation: selectedPresetData.transform,
       });
     } catch (error) {
       console.error("Error retouching image:", error);
@@ -166,7 +167,7 @@ export function AIEdit({ project }: { project: Project }) {
   }
 
   const hasActiveTransformations =
-    project.activeTransformations?.includes("e-retouch");
+    project?.activeTransformation?.includes("e-retouch");
   const selectedPresetData = RETOUCH_PRESETS.find(
     (p) => p.key === selectedPreset,
   );
@@ -192,9 +193,7 @@ export function AIEdit({ project }: { project: Project }) {
 
       {/* Preset Selection */}
       <div>
-        <h3 className="mb-3 text-sm font-medium ">
-          Choose Enhancement Style
-        </h3>
+        <h3 className="mb-3 text-sm font-medium">Choose Enhancement Style</h3>
         <div className="grid grid-cols-2 gap-3">
           {RETOUCH_PRESETS.map((preset) => {
             const Icon = preset.icon;
@@ -206,18 +205,16 @@ export function AIEdit({ project }: { project: Project }) {
                 className={`relative cursor-pointer rounded-lg border p-4 transition-all ${
                   isSelected
                     ? "border-primary bg-neutral-400/10"
-                    : "dark:border-white/20 border-black/15 bg-white  dark:bg-neutral-900/30 hover:border-white/40"
+                    : "border-black/15 bg-white hover:border-white/40 dark:border-white/20 dark:bg-neutral-900/30"
                 }`}
                 onClick={() => setSelectedPreset(preset.key)}
               >
                 <div className="flex flex-col items-center text-center">
-                  <Icon className="mb-2 h-8 w-8 text-primary" />
+                  <Icon className="text-primary mb-2 h-8 w-8" />
                   <div className="mb-1 flex items-center gap-2">
-                    <h4 className="text-sm font-medium ">
-                      {preset.label}
-                    </h4>
+                    <h4 className="text-sm font-medium">{preset.label}</h4>
                     {preset.recommended && (
-                      <span className="rounded-full bg-primary text-white dark:text-black px-1.5 py-0.5 text-xs ">
+                      <span className="bg-primary rounded-full px-1.5 py-0.5 text-xs text-white dark:text-black">
                         ★
                       </span>
                     )}
@@ -243,8 +240,8 @@ export function AIEdit({ project }: { project: Project }) {
       </Button>
 
       {/* Information */}
-      <div className="rounded-lg bg-neutral-200/40 border-transparent ring ring-black/10 dark:bg-slate-700/30 p-4">
-        <h4 className="mb-2 flex items-center gap-2 text-sm font-medium ">
+      <div className="rounded-lg border-transparent bg-neutral-200/40 p-4 ring ring-black/10 dark:bg-slate-700/30">
+        <h4 className="mb-2 flex items-center gap-2 text-sm font-medium">
           <Info className="h-4 w-4" />
           How AI Retouch Works
         </h4>
