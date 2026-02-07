@@ -16,7 +16,7 @@ const Header = () => {
   const { theme } = useTheme();
   const path = usePathname();
   const { isLoading } = useStoreUserEffect();
-  const { has } = useAuth();
+  const { isSignedIn } = useAuth();
 
   const [scrolled, setScrolled] = useState<boolean>(false);
   const { scrollY } = useScroll();
@@ -37,12 +37,16 @@ const Header = () => {
         animate={{
           width: scrolled ? "60%" : "100%",
         }}
+        layout
         transition={{
-          duration: 0.3,
-          ease: "easeInOut",
+          layout: {
+            duration: 0.3,
+            ease: [0.22, 1, 0.36, 1],
+          },
         }}
         className={`m-auto mt-2 flex w-full max-w-6xl items-center justify-between px-4 py-4 backdrop-blur-2xl md:px-7 ${
-          scrolled && "rounded-2xl border border-neutral-300/80 dark:border-neutral-600/40 bg-white/20 shadow-lg dark:bg-neutral-900/50"
+          scrolled &&
+          "rounded-2xl border border-neutral-300/80 bg-white/20 shadow-lg dark:border-neutral-600/40 dark:bg-neutral-900/50"
         }`}
       >
         <Link href={"/"} className="flex items-end text-2xl font-semibold">
@@ -76,7 +80,16 @@ const Header = () => {
             </li>{" "}
           </ul>
         </div> */}
-        <div className="flex items-center gap-4">
+        <motion.div
+          layout
+          transition={{
+            layout: {
+              duration: 0.3,
+              ease: [0.22, 1, 0.36, 1],
+            },
+          }}
+          className="flex items-center gap-4"
+        >
           <span>
             <ModeToggle />
           </span>
@@ -93,15 +106,15 @@ const Header = () => {
                   </Button>
                 </SignInButton>
                 <SignUpButton>
-                  <Button>Get Started</Button>
+                  <Button>Register</Button>
                 </SignUpButton>
               </>
             )}
           </Unauthenticated>
 
-          {!has && (
+          {!isSignedIn || (
             <Link href={"/dashboard"}>
-              <Button variant={"outline"} className="hidden sm:flex">
+              <Button variant={"default"} className="hidden sm:flex">
                 <LayoutDashboard className="mr-2" size={18} />
                 Dashboard
               </Button>
@@ -111,7 +124,7 @@ const Header = () => {
           <Authenticated>
             <UserButton />
           </Authenticated>
-        </div>
+        </motion.div>
         {isLoading && (
           <div className="fixed bottom-0 left-0 z-40 flex w-full justify-center">
             <BarLoader
